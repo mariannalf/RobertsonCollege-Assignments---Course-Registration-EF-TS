@@ -1,0 +1,77 @@
+﻿@model IList<StudentDto>
+@{
+    ViewData["Title"] = "Students - Course Registration";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Students</h1>
+</div>
+
+<table class="table table-stripped">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Phone Number</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <th scope="row">@item.Id</th>
+                <td>@item.FirstName</td>
+                <td>@item.LastName</td>
+                <td>@item.Email</td>
+                <td>@item.Phone</td>
+                <td>
+                    <button type="submit" class="btn btn-primary"
+                        onclick="editStudent(@item.Id, '@item.FirstName', '@item.LastName', '@item.Email', '@item.Phone')">Edit</button>
+                    <button type="submit" class="btn btn-danger" onclick="deleteStudent(@item.Id)">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<button type="submit" class="btn btn-primary" onclick="newStudent()">New Student</button>
+
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form method="post" onsubmit="return validateStudent()">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="label">Add Students</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="studentId" name="id" value="" />
+
+                    <div class="mb-3">
+                        <label for="firstName" class="form-label">First Name</label>
+                        <input type="text" class="form-control" id="firstName" name="firstName">
+                    </div>
+                    <div class="mb-3">
+                        <label for="lastName" class="form-label">Last Name</label>
+                        <input type="text" class="form-control" id="lastName" name="lastName">
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="text" class="form-control" id="email" name="email">
+                    </div>
+                    <div class="mb-3">
+                        <label for="phoneNumber" class="form-label">Phone Number</label>
+                        <input type="text" class="form-control" id="phoneNumber" name="phoneNumber">
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="submit" class="btn btn-primary">Create</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

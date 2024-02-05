@@ -1,0 +1,110 @@
+﻿@model IList<CourseDto>
+@{
+    ViewData["Title"] = "Courses - Course Registration";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Courses</h1>
+</div>
+
+<table id="courses-table" class="table table-stripped table-hover">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Course Number</th>
+            <th scope="col">Name</th>
+            <th scope="col">Description</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <th data-bs-toggle="modal" data-bs-target="#modal_@item.Id" scope="row">@item.Id</th>
+                <td data-bs-toggle="modal" data-bs-target="#modal_@item.Id">@item.CourseNumber</td>
+                <td data-bs-toggle="modal" data-bs-target="#modal_@item.Id">@item.Name</td>
+                <td data-bs-toggle="modal" data-bs-target="#modal_@item.Id">@item.Description</td>
+                <td>
+                    <button type="submit" class="btn btn-primary"
+                        onclick="editCourse(@item.Id, '@item.CourseNumber', '@item.Name', '@item.Description')">Edit</button>
+                    <button type="submit" class="btn btn-danger" onclick="deleteCourse(@item.Id)">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@foreach (var item in Model)
+{
+    <div class="modal fade" id="modal_@item.Id" tabindex="-1" role="dialog" aria-labelledby="label_@item.Id"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="label_@item.Id">Students in @item.Name class</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-stripped">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">First Name</th>
+                            <th scope="col">Last Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var s in item.EnrolledStudents)
+                            {
+                                <tr>
+                                    <th scope="row">@s.Id</th>
+                                    <td>@s.FirstName</td>
+                                    <td>@s.LastName</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+<button type="submit" class="btn btn-primary" onclick="newCourse()">New Course</button>
+
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form method="post" onsubmit="return validateCourse()">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="label">Add Course</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="courseId" name="id" value="" />
+                    <div class="mb-3">
+                        <label for="courseNumber" class="form-label">Course Number</label>
+                        <input type="number" class="form-control" id="courseNumber" name="courseNumber">
+                    </div>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name" name="name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <input type="text" class="form-control" id="description" name="description">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="submit" class="btn btn-primary">Create</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

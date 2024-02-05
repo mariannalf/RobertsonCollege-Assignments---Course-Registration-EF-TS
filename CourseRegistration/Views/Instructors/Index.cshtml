@@ -1,0 +1,82 @@
+﻿@model (IList<InstructorDto>, IList<CourseDto>)
+@{
+    ViewData["Title"] = "Instructors - Course Registration";
+    var (instructors, courses) = Model;
+}
+
+<div class="text-center">
+    <h1 class="display-4">Instructors</h1>
+</div>
+
+<table class="table table-stripped">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Course</th>
+            <td scope="col"></td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in instructors)
+        {
+            <tr>
+                <th scope="row">@item.Id</th>
+                <td>@item.FirstName</td>
+                <td>@item.LastName</td>
+                <td>@item.Email</td>
+                <td>@item.Course?.Name</td>
+                <td>
+                    <button type="submit" class="btn btn-primary"
+                        onclick="editInstructor(@item.Id, '@item.FirstName', '@item.LastName', '@item.Email', @item.Course?.Id)">Edit</button>
+                    <button type="submit" class="btn btn-danger" onclick="deleteInstructor(@item.Id)">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<button type="submit" class="btn btn-primary" onclick="newInstructor()">New Instructor</button>
+
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form method="post" onsubmit="return validateInstructor()">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="label">Add Instructor</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="instructorId" name="id" value="" />
+                    <div class="mb-3">
+                        <label for="firstName" class="form-label">First Name</label>
+                        <input type="text" class="form-control" id="firstName" name="firstName">
+                    </div>
+                    <div class="mb-3">
+                        <label for="lastName" class="form-label">Last Name</label>
+                        <input type="text" class="form-control" id="lastName" name="lastName">
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="text" class="form-control" id="email" name="email">
+                    </div>
+                    <div class="mb-3">
+                        <label for="courseId" class="form-label">Course</label>
+                        <select class="form-select" id="courseId" name="courseId">
+                            <option value="">Select Course</option>
+                            @foreach (var item in courses)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="submit" class="btn btn-primary">Create</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
